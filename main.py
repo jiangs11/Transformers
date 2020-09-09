@@ -5,15 +5,25 @@ from torch import nn
 import numpy as np
 from model import Transformer 
 
-# transformer_model = nn.Transformer(nhead=16, num_encoder_layers=12)
-# source = torch.rand((10, 32, 512))
-# target = torch.rand((20, 32, 512))
-# out = transformer_model(source, target)
-source = torch.rand((10, 32, 512))
+source = torch.rand((10, 1, 512))
 target = source
-model = Transformer()
-output = model(source, target)
 
-print('Source: \n', source)
-print('Target: \n', target)
-print('Output: \n', output)
+def train(model, num_epochs=10, learning_rate=0.01):
+    loss_function = nn.L1Loss()
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+    for i in range(num_epochs):
+        prediction = model(source, target)
+
+        if i == num_epochs-1:
+            print('Prediction: ', prediction)
+
+        loss = loss_function(prediction, target)
+        print('Loss: ', loss.item())
+
+        optimizer.zero_grad()
+        loss.backward
+        optimizer.step()
+
+model = Transformer()
+train(model)
